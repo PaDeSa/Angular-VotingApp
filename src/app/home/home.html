@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vote Électronique - Participez dès maintenant</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Vote Électronique Sécurisé</h1>
+      <p>Un système de vote moderne, transparent et accessible.</p>
+      <a href="#vote-section" class="btn">Voter Maintenant</a>
+    </div>
+  </header>
+
+  <section id="features">
+    <div class="container">
+      <h2>Pourquoi choisir notre système ?</h2>
+      <div class="features-grid">
+        <div class="feature">
+          <h3>🔒 Sécurité</h3>
+          <p>Vos données sont chiffrées et stockées en toute sécurité.</p>
+        </div>
+        <div class="feature">
+          <h3>📈 Transparence</h3>
+          <p>Chaque vote est traçable, mais reste anonyme.</p>
+        </div>
+        <div class="feature">
+          <h3>🕒 Accessibilité 24/7</h3>
+          <p>Votez où que vous soyez, à tout moment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vote-section">
+    <div class="container">
+      <h2>Voter en quelques clics</h2>
+      <p>Identifiez-vous pour commencer le processus de vote.</p>
+      <button (click)= "goToLogin()">Commencer le vote</button>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <h2>Questions fréquentes</h2>
+      <details>
+        <summary>Comment mes données sont-elles protégées ?</summary>
+        <p>Nous utilisons un système de cryptographie avancé pour garantir la sécurité et l’anonymat de votre vote.</p>
+      </details>
+      <details>
+        <summary>Puis-je changer mon vote ?</summary>
+        <p>Une fois soumis, votre vote est définitif afin d’assurer l'intégrité du processus.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2>Contactez-nous</h2>
+      <form id="contactForm">
+        <input type="text" placeholder="Votre nom" required>
+        <input type="email" placeholder="Votre email" required>
+        <textarea placeholder="Votre message" required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Plateforme de Vote Électronique. Tous droits réservés.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

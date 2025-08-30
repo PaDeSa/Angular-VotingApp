@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion - Vote Électronique</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <form (ngSubmit)='login()' class="login-form">
+      <h2>Connexion</h2>
+      <p>Accédez à votre espace de vote sécurisé</p>
+      
+      <input type="email" name = "email"[ngModel]="email()" (ngModelChange)="email.set($event)" placeholder="Adresse email" required>
+      <input type="password" name = "password" [ngModel]="password()" (ngModelChange)="password.set($event)"placeholder="Mot de passe" required>
+
+      <button (click)="login()">Se connecter</button>
+
+      <p class="message">Vous n'avez pas de compte ? <a href="#">Contactez l'administrateur </a></p>
+    </form>
+   <p *ngIf="errorMessage()" style="color:red">{{ errorMessage() }}</p>
+  </div>
+</body>
+</html>
