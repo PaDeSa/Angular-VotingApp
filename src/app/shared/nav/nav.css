@@ -1,0 +1,13 @@
+ul li a{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  ul li{
+   margin: 20px 0;
+  }
+  
+  ul {
+    list-style: none;
+  }
