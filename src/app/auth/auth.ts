@@ -64,8 +64,9 @@ export class Auth {
     return localStorage.getItem("user")
   }
   
-  storeToken(token:any){
+  store(token:any,user:any){
    sessionStorage.setItem('token',token)
+   sessionStorage.setItem('user',user)
   }
 
   public isAuthenticated(): boolean {

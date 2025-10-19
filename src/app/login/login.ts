@@ -43,6 +43,9 @@ export class Login {
     this.authService.login(object)
     .subscribe({
       next:(data:any)=>{
+
+        let jwtResponse = data?.data
+        this.authService.store(jwtResponse?.accessToken,jwtResponse?.user)
         Swal.fire({
           title: 'Session !!!',
           text: 'Authentification réussie',
