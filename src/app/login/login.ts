@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { Auth } from '../auth/auth';
 import Swal from 'sweetalert2';
+import { AuthRequest } from '../services/model/auth-request';
 
 @Component({
   selector: 'app-login',
@@ -23,24 +24,15 @@ export class Login {
 
 
   login() {
-    // if (this.email() === 'admin@ad.sn' && this.password() === '1234') {
-    //   this.errorMessage.set('');
-    //   alert('Connexion réussie ✅');
-    //   this.router.navigate(['/dashboard']);
-    // } else if (this.email() === 'psarr@vote.sn' || this.password() === 'Voting2026@') {
-    //   this.errorMessage.set('');
-    //   alert('Connexion réussie ✅');
-    //   this.router.navigate(['/candidats']);
-    // }
-    // else {
-    //   this.errorMessage.set('Nom d’utilisateur ou mot de passe incorrect ❌');
-    // }
-
-    const object ={
+    const object:AuthRequest ={
       "usernameOrEmail": this.email(),
       "password": this.password()
     }
-    this.authService.login(object)
+    this.authService.login(
+      {
+        body: object
+      }
+     )
     .subscribe({
       next:(data:any)=>{
 

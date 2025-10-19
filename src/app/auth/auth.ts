@@ -2,9 +2,14 @@ import { inject, Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import moment from 'moment';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpContext } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { BaseService } from '../services/generic/base-service';
+import { ApiConfiguration } from '../services/generic/api-configuration';
+import { Auth$Params, login } from '../services/fn/auth-login';
+import { StrictHttpResponse } from '../services/generic/strict-http-response';
+import { ApiResponse } from '../services/response/api-response';
 
 interface TokenPayload {
   exp: number;
@@ -23,17 +28,31 @@ interface AuthUser {
 @Injectable({
   providedIn: 'root'
 })
-export class Auth {
+export class Auth extends BaseService{
 
    
-  constructor() { }
-
-  http= inject(HttpClient);
-
-
-  login(data:any):Observable<any>{
-   return this.http.post(`${environment.apiUrl}/api/v1/auth/login`,data);
+  constructor(config:ApiConfiguration,http:HttpClient) {
+    super(config, http);
   }
+
+  static readonly loginPath = '/api/v1/auth/login';
+
+
+  login$Response(params: Auth$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+    return login(this.http, this.rootUrl, params, context);
+  }
+
+  login(params: Auth$Params, context?: HttpContext):Observable<ApiResponse> {
+    return this.login$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
+    );
+  }
+
+
+
+  // login(data:any):Observable<any>{
+  //  return this.http.post(`${environment.apiUrl}/api/v1/auth/login`,data);
+  // }
 
   public tokenExpired(token:any):boolean{
     const payload = this.getRawToken(token);
