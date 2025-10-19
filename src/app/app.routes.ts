@@ -12,6 +12,7 @@ import { GestionBulletin } from './components/gestion-bulletin/gestion-bulletin'
 import { ElectionsOpened } from './components/elections-opened/elections-opened';
 import { Scrutin } from './components/scrutin/scrutin';
 import { Registration } from './registration/registration';
+import { authGuard } from './auth/guards/auth-guard';
 
 
 
@@ -32,7 +33,8 @@ export const routes: Routes = [
         {path:"gestion-bulletin", component: GestionBulletin},
         {path:"election-opened", component: ElectionsOpened},
         {path:"scrutin", component: Scrutin},
-    ]
+    ],
+      canActivate: [authGuard]
     },
     
 

@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
+import { Auth } from '../auth/auth';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -17,18 +19,47 @@ export class Login {
     password = signal('');
     errorMessage = signal('');
 
+    authService = inject(Auth);
+
+
   login() {
-    if (this.email() === 'admin@ad.sn' && this.password() === '1234') {
-      this.errorMessage.set('');
-      alert('Connexion réussie ✅');
-      this.router.navigate(['/dashboard']);
-    } else if (this.email() === 'psarr@vote.sn' || this.password() === 'Voting2026@') {
-      this.errorMessage.set('');
-      alert('Connexion réussie ✅');
-      this.router.navigate(['/candidats']);
+    // if (this.email() === 'admin@ad.sn' && this.password() === '1234') {
+    //   this.errorMessage.set('');
+    //   alert('Connexion réussie ✅');
+    //   this.router.navigate(['/dashboard']);
+    // } else if (this.email() === 'psarr@vote.sn' || this.password() === 'Voting2026@') {
+    //   this.errorMessage.set('');
+    //   alert('Connexion réussie ✅');
+    //   this.router.navigate(['/candidats']);
+    // }
+    // else {
+    //   this.errorMessage.set('Nom d’utilisateur ou mot de passe incorrect ❌');
+    // }
+
+    const object ={
+      "usernameOrEmail": this.email(),
+      "password": this.password()
     }
-    else {
-      this.errorMessage.set('Nom d’utilisateur ou mot de passe incorrect ❌');
-    }
+    this.authService.login(object)
+    .subscribe({
+      next:(data:any)=>{
+        Swal.fire({
+          title: 'Session !!!',
+          text: 'Authentification réussie',
+          icon: 'success',
+          //confirmButtonText: 'OK'
+        });
+        console.log("succeed logged !!!")
+        this.router.navigate(['/dashboard']);
+      },
+      error:(error:any)=>{
+        Swal.fire({
+          title: 'Session !!!',
+          text: error?.error?.errorDTOS[0]?.errorMessage,
+          icon: 'error',
+          //confirmButtonText: 'OK'
+        });
+      }
+    })
   }
 }

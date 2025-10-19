@@ -1,0 +1,104 @@
+import { inject, Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
+import moment from 'moment';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+
+interface TokenPayload {
+  exp: number;
+  [key: string]: any;
+}
+
+interface Role {
+  name?: string;
+}
+
+interface AuthUser {
+  roles?: Role[];
+  [key: string]: any;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class Auth {
+
+   
+  constructor() { }
+
+  http= inject(HttpClient);
+
+
+  login(data:any):Observable<any>{
+   return this.http.post(`${environment.apiUrl}/api/v1/auth/login`,data);
+  }
+
+  public tokenExpired(token:any):boolean{
+    const payload = this.getRawToken(token);
+    if (!payload || typeof payload.exp !== 'number') {
+      return true;
+    }
+    return moment().unix() > payload.exp;
+  }
+   
+  getRawToken(accessToken:any): TokenPayload | undefined{
+    if (!accessToken) {
+      return undefined;
+    }
+    try {
+      return jwtDecode<TokenPayload>(accessToken);
+    } catch {
+      return undefined;
+    }
+  }
+
+
+  getToken(){
+    return sessionStorage.getItem('token');
+    //return localStorage.getItem('token');
+  }
+  
+  getUserAuth(){
+    return localStorage.getItem("user")
+  }
+  
+  storeToken(token:any){
+   sessionStorage.setItem('token',token)
+  }
+
+  public isAuthenticated(): boolean {
+    const token = this.getToken();
+    if (!token || this.tokenExpired(token)) {
+      return false;
+    }
+    return true;
+  }
+
+  isAdmin(user:string): boolean {
+    try {
+      const userObject = JSON.parse(user) as AuthUser;
+      const roles = Array.isArray(userObject.roles) ? userObject.roles : [];
+      return roles.some(role => role?.name === 'ADMIN');
+    } catch {
+      return false;
+    }
+  }
+
+  public logOut() {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    return true;
+  }
+ 
+  showSessionExpiredAlert(): void {
+    Swal.fire({
+      title: 'Session expirée',
+      text: 'Veuillez vous reconnecter',
+      icon: 'warning',
+      confirmButtonText: 'OK'
+    });
+  }
+  
+}
