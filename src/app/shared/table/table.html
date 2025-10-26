@@ -1,0 +1,162 @@
+<div class="container-table">
+    @if (hasSearchForm) {
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title> Recherche</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Nom</mat-label>
+                            <input matInput />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Marque</mat-label>
+                            <input matInput />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Profil</mat-label>
+                            <input matInput />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                        <button class="button-blue w-100" type="submit"><i class="fa fa-search me-2"></i>
+                            Rechercher</button>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    }
+
+
+    @if (hasFilterInput) {
+        <mat-form-field class="mt-4">
+            <input matInput (keyup)="applyFilter($event)" placeholder="Recherche rapide" />
+        </mat-form-field>
+    }
+
+    
+    <div class="example-container mat-elevation-z8">
+        <div class="example-table-container">
+            <table mat-table [dataSource]="dataSource" #table matSort>
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</th>
+
+                    <td mat-cell *matCellDef="let row" class="m-card-title" test data-label="Riskplan">
+                        @if (column.isDate) {
+                            <span>
+                                {{ row[column.columnDef] | date:'yyyy-MM-dd'}}
+                            </span>
+                        }
+
+                        @if (!column.isDate && !column.isStatut && !column.isRoles) {
+                            <span>
+                                {{ row[column.columnDef] ?? '-----' }}
+                            </span>
+                        }
+                      
+                        @if (column.isStatut) {
+                            <span>
+                                
+                                @if (row[column.columnDef]) {
+                                    <i class="fa fa-check-circle" style="color:green"></i>
+                                }
+
+                                @if (!row[column.columnDef]) {
+                                    <i class="fa fa-times-circle" style="color:red"></i>
+                                }
+                           
+                            </span>
+                        }
+
+             
+
+                        <!-- roles -->
+                        <!-- <span *ngIf="column.isRoles">
+                
+                            <div *ngFor="let role of row[column.columnDef]"
+                                class="badge rounded-pill bg-primary d-inline-flex align-items-center justify-content-center px-2 py-1 mx-2">
+                                {{role.name}}
+                                <button type="button" class="btn-close btn-close-white btn-close-smaller ms-2" (click)="onTableAction($event, actionButton.remove_role, row, role.name)"
+                                    aria-label="Close"></button>
+                            </div>
+                        </span> -->
+
+                    </td>
+
+
+                </ng-container>
+
+
+                <ng-container matColumnDef="actions" *ngIf="hasActions">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Action</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="actions-btns center">
+                            <a *ngFor="let a of actions" href="javaScript:(0);"
+                                (click)="onTableAction($event, a?.action, element)">
+                                <ng-container [ngSwitch]="a?.action">
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.view" class="fa fa-eye"
+                                        matTooltip="Voir les détails" type="button"></i>
+
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.view_file" class="fas fa-download"
+                                        matTooltip="Voir le fichier" type="button"></i>
+
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.put_final_doc" class="fas fa-upload"
+                                        matTooltip="Charger le PV final" type="button"></i>
+
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.unblock"
+                                        matTooltip="Autoriser une nouvelle modification" class="fa fa-lock-open"
+                                        type="button"></i>
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.block" matTooltip="Bloquer la modification"
+                                        class="fa fa-lock text-danger" type="button"></i>
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.validate" matTooltip="Valider la demande KYC"
+                                        class="fa-solid fa-circle-check text-success" type="button"></i>
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.cancel" matTooltip="Annuler la demande KYC"
+                                        class="fa fa-times text-danger" type="button"></i>
+
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.to_modify"
+                                        matTooltip="Envoyer une demande de modification" class="fa fa-check"
+                                        type="button"></i>
+
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.to_edit"
+                                        matTooltip="Envoyer une demande de modification" class="fa fa-pen"
+                                        type="button"></i>
+
+                                    <i matTooltipPosition="above" matTooltipClass="custom-tooltip"
+                                        *ngSwitchCase="actionButton.delete" matTooltip="Supprimer" class="fa fa-trash"
+                                        type="button"></i>
+                                </ng-container>
+                            </a>
+
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                    <td style="text-align: center" [attr.colspan]="displayedColumns.length" class="centercol mat-cell">
+                        Aucun enregistrement trouvé ...
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <mat-paginator [hidden]="!dataSource.data.length" [pageSizeOptions]="pageSizeOptions" [length]="pageData.length"
+            [pageSize]="pageData.size" (page)="OnPageChange($event)" [pageIndex]="pageData.page"
+            showFirstLastButtons></mat-paginator>
+    </div>
+</div>

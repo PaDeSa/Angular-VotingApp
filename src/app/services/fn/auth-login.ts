@@ -4,13 +4,14 @@ import { filter, map, Observable } from "rxjs";
 import { StrictHttpResponse } from "../generic/strict-http-response";
 import { RequestBuilder } from "../request-builder";
 import { ApiResponse } from "../response/api-response";
+import { RegisterRequest } from "../model/register-request";
 
 
 export interface Auth$Params{
     body: AuthRequest;
 }
 export interface Register$Params{
-    body: AuthRequest;
+    body: RegisterRequest;
 }
 
 export function login(http:HttpClient,
@@ -37,6 +38,7 @@ export function login(http:HttpClient,
 }
 
 login.PATH = '/api/v1/auth/login';
+
 export function register(
   http: HttpClient,
   rootUrl: string,
@@ -64,4 +66,4 @@ export function register(
     );
 }
 
-register.PATH = '/api/v1/auth/register';
+register.PATH = '/api/v1/users/register';

@@ -3,43 +3,58 @@
 
   <form [formGroup]="registerForm" (ngSubmit)="register()">
     <div class="form-group">
-      <label for="firstname">Prénom</label>
-      <input id="firstname" type="text" formControlName="firstname" placeholder="Entrez votre prénom" />
-      <small *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched" class="error">
-        Le prénom est obligatoire
-      </small>
+      <label for="firstName">Prénom</label>
+      <input id="firstName" type="text" formControlName="firstName" placeholder="Entrez votre prénom" />
+      @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+        <small  class="error">
+          Le prénom est obligatoire
+        </small>
+      }
+   
     </div>
 
     <div class="form-group">
-      <label for="lastname">Nom</label>
-      <input id="lastname" type="text" formControlName="lastname" placeholder="Entrez votre nom" />
-      <small *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" class="error">
-        Le nom est obligatoire
-      </small>
+      <label for="lastName">Nom</label>
+      <input id="lastName" type="text" formControlName="lastName" placeholder="Entrez votre nom" />
+      
+      @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+        <small  class="error">
+          Le nom est obligatoire
+        </small>
+      }
+     
     </div>
 
     <div class="form-group">
       <label for="username">Nom d'utilisateur</label>
       <input id="username" type="text" formControlName="username" placeholder="Entrez un nom d'utilisateur" />
-      <small *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error">
-        Le nom d'utilisateur est obligatoire
-      </small>
+      @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched) {
+        <small  class="error">
+          Le nom d'utilisateur est obligatoire
+        </small>
+      }
+      
     </div>
 
     <div class="form-group">
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email" placeholder="Entrez votre email" />
-      <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error">
-        Email invalide
-      </small>
+      @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+        <small  class="error">
+          Email invalide
+        </small>
+      }
     </div>
 
     <div class="form-group">
       <label for="password">Mot de passe</label>
       <input id="password" type="password" formControlName="password" placeholder="Entrez un mot de passe" />
-      <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error">
-        Le mot de passe est obligatoire
-      </small>
+      @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+        <small  class="error">
+          Le mot de passe est obligatoire
+        </small>
+      }
+     
     </div>
 
     <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>

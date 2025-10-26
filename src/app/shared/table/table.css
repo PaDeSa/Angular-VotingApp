@@ -1,0 +1,29 @@
+table {
+    width: 100%;
+}
+
+.full-width {
+    font-size: 14px;
+    width: 100%;
+}
+
+td {
+    color: black;
+}
+
+th{
+    color: black;
+}
+
+tr{
+    color: black;
+}
+
+
+
+.actions-btns {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    
+}
