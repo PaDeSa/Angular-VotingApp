@@ -19,7 +19,6 @@ export class Login {
     email = signal('');
     password = signal('');
     errorMessage = signal('');
-
     authService = inject(Auth);
 
 
@@ -57,4 +56,7 @@ export class Login {
       }
     })
   }
+  goToRegister() {
+    this.router.navigate(['/register']); 
+}
 }

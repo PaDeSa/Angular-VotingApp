@@ -16,9 +16,10 @@
       <input type="password" name = "password" [ngModel]="password()" (ngModelChange)="password.set($event)"placeholder="Mot de passe" required>
 
       <button (click)="login()">Se connecter</button>
-
-      <p class="message">Vous n'avez pas de compte ? <a href="#">Contactez l'administrateur </a></p>
     </form>
+    <div class="register-link">
+  <button type="button" (click)="goToRegister()">S'inscrire</button>
+</div>
    <p *ngIf="errorMessage()" style="color:red">{{ errorMessage() }}</p>
   </div>
 </body>

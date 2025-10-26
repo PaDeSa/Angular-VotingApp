@@ -7,7 +7,7 @@ import { map, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { BaseService } from '../services/generic/base-service';
 import { ApiConfiguration } from '../services/generic/api-configuration';
-import { Auth$Params, login } from '../services/fn/auth-login';
+import { Auth$Params, login, Register$Params, register } from '../services/fn/auth-login';
 import { StrictHttpResponse } from '../services/generic/strict-http-response';
 import { ApiResponse } from '../services/response/api-response';
 
@@ -36,7 +36,17 @@ export class Auth extends BaseService{
   }
 
   static readonly loginPath = '/api/v1/auth/login';
+  static readonly registerPath = '/api/v1/auth/register';
+ /** REGISTER */
+  register$Response(params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return register(this.http, this.rootUrl, params, context);
+  }
 
+  register(params: Register$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.register$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
+    );
+  }
 
   login$Response(params: Auth$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
     return login(this.http, this.rootUrl, params, context);
