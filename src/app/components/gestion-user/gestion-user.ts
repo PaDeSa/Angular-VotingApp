@@ -1,11 +1,125 @@
-import { Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+
+import { GlobalConstant } from '../../constants/global.constant';
+import { ISearchRequestForm } from '../../services/model/search.model';
+import { User } from '../../services/services';
+import { Table } from '../../shared/table/table';
+import { IPagination } from '../../utils/page.data.mode';
 
 @Component({
   selector: 'app-gestion-user',
-  imports: [],
+  imports: [Table],
   templateUrl: './gestion-user.html',
   styleUrl: './gestion-user.css'
 })
-export class GestionUser {
+export class GestionUser implements OnInit{
+
+  private userService = inject(User);
+   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+ columns: any[] = [];
+ actions: any[] = [];
+ data: any[] = [];
+ pageData: IPagination = { page: 0, size: 5, length: 0 };
+ pageSizeOptions = [5, 15, 30, 50];
+ searchParams!: ISearchRequestForm;
+
+ actionButton = GlobalConstant.actionButton;
+ 
+  title = '';
+  currentListRoute = '';
+  routeTitle = '';
+  pages:any = [];
+  page = 0;
+  pageSize = 10;
+  userData:any;
+
+  constructor(private cdr:ChangeDetectorRef){
+    this.actions = [
+      // { action: this.actionButton.view, permissions: ['*'] },
+       //{ action: this.actionButton.validate, permissions:['*'] },
+       //{ action: this.actionButton.cancel, permissions: ['*'] },
+       { action: this.actionButton.to_modify, permissions: ['*'] },
+       //{ action: this.actionButton.remove_role, permissions: ['*'] },
+       { action: this.actionButton.view, permissions: ['*'] },
+   ];
+  }
+
+  ngOnInit(): void {
+    this.onInitColumns()
+    this.loadUsers(this.page,this.pageSize);
+  }
+
+   onInitColumns(): void {
+    this.columns = [
+        { columnDef: 'id', header: 'Id' },
+        { columnDef: 'lastName', header: 'Nom' },
+        { columnDef: 'firstName', header: 'Prenom' },
+        { columnDef: 'email', header: 'Email' },
+        { columnDef: 'username', header: 'nom utilisateur' }
+    ];
+  }
+
+  onPageChange(event: IPagination): void {
+    this.pageData = { ...this.pageData, page: event.page, size: event.size };
+    //this.userService.getUsers(event.page, event.size)
+    console.log("---------user manag page change-----------");
+    console.log(this.pageData);
+    
+  }
+
+   onApplyFilter(event: any): void {
+    this.searchParams = { ...this.searchParams, searchText: event };
+    //this.userService.getUsers(this.pageData.page, this.pageData.size)
+  }
+
+   onTableAction(event: any): void {
+   
+    if (event.actionName === this.actionButton.to_modify) {
+     
+    }
+
+    if(event.actionName === this.actionButton.cancel){
+    
+    }
+
+     if(event.actionName === this.actionButton.validate){
+    
+    }
+    if(event.actionName === this.actionButton.view){
+      console.log("view election  !!!")
+    }
+
+        
+    }
+
+    loadUsers(page: number, size: number): void {
+      this.userService.findAllUsers(
+        {
+          page: page,
+          size: size
+        }
+      ).subscribe({
+        next:(datas:any)=>{
+          this.userData = datas?.data?.content;     
+          this.pages = Array(datas?.data?.totalPages)
+           .fill(0)
+           .map((x, i) => i);
+            this.cdr.detectChanges();
+       },
+       error:(error:any)=>{
+        console.log("Error")
+       }
+        })
+      
+    }
+
 
 }

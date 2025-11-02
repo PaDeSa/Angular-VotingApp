@@ -1,10 +1,17 @@
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { IPagination } from '../../utils/page.data.mode';
+
 import { GlobalConstant } from '../../constants/global.constant';
 import { ISearchRequestForm } from '../../services/model/search.model';
 import { Election } from '../../services/services';
 import { Table } from '../../shared/table/table';
+import { IPagination } from '../../utils/page.data.mode';
 
 @Component({
   selector: 'app-gestion-election',
@@ -40,10 +47,10 @@ export class GestionElection implements OnInit {
   constructor(private cdr:ChangeDetectorRef){
     this.actions = [
       // { action: this.actionButton.view, permissions: ['*'] },
-       { action: this.actionButton.validate, permissions:['*'] },
-       { action: this.actionButton.cancel, permissions: ['*'] },
+       //{ action: this.actionButton.validate, permissions:['*'] },
+       //{ action: this.actionButton.cancel, permissions: ['*'] },
        { action: this.actionButton.to_modify, permissions: ['*'] },
-       { action: this.actionButton.remove_role, permissions: ['*'] },
+       //{ action: this.actionButton.remove_role, permissions: ['*'] },
        { action: this.actionButton.view, permissions: ['*'] },
    ];
   }
@@ -84,16 +91,20 @@ export class GestionElection implements OnInit {
 
 
   onTableAction(event: any): void {
-    console.log("action activate")
-  
-    if (event.name === this.actionButton.to_modify) {
-        //console.log("for activate username "+username)
-        //this.userService.activateUser(username)
+   
+    if (event.actionName === this.actionButton.to_modify) {
+     
     }
 
-    if(event.name === this.actionButton.cancel){
-     // console.log("for deactivate username "+username)
-      //this.userService.deactivateUser(username)
+    if(event.actionName === this.actionButton.cancel){
+    
+    }
+
+     if(event.actionName === this.actionButton.validate){
+    
+    }
+    if(event.actionName === this.actionButton.view){
+      console.log("view election  !!!")
     }
 
         

@@ -1,5 +1,5 @@
 export interface TableButtonAction {
-    name: string;
+    actionName: string;
     value?: any;
     text?: string;
 }

@@ -1,11 +1,39 @@
 <h2>Élections 2025</h2>
-    <ul>
+ @if(isAdmin) {
+   <ul>
       <li><a routerLink="/dashboard">Tableau de bord</a></li>
+     
       <li><a routerLink="/dashboard/gestion-candidats">Gestion des candidats</a></li>
       <li><a routerLink="/dashboard/gestion-election">Gestion des élections</a></li>
       <li><a routerLink="/dashboard/gestion-role">Gestion des rôles</a></li>
       <li><a routerLink="/dashboard/gestion-user">Gestion des utilisateurs</a></li>
       <li><a routerLink="/dashboard/gestion-bulletin">Gestion des bulletins</a></li>
       <li><a routerLink="/dashboard/election-opened">Élections ouvertes</a></li>
-      <li><a routerLink="/dashboard/scrutin">Scrutin</a></li>
+      <!-- <li><a routerLink="/dashboard/scrutin">Scrutin</a></li> -->
      </ul>
+  }
+
+  @if(isSupervisor) {
+   <ul>
+      <li><a routerLink="/dashboard">Tableau de bord</a></li>
+      <li><a routerLink="/dashboard/gestion-candidats">Gestion des candidats</a></li>
+      <li><a routerLink="/dashboard/gestion-election">Gestion des élections</a></li>
+      <li><a routerLink="/dashboard/gestion-bulletin">Gestion des bulletins</a></li>
+      <li><a routerLink="/dashboard/election-opened">Élections ouvertes</a></li>
+      <!-- <li><a routerLink="/dashboard/scrutin">Scrutin</a></li> -->
+     </ul>
+  }
+
+  @if (isElector) {
+    <ul>
+       <li><a routerLink="/dashboard/election-opened">Élections ouvertes</a></li>
+       </ul>
+  }
+
+  <ul>
+    <li><a (click)="authS.logOut()">Déconnexion</a></li>
+  </ul>
+
+
+
+    

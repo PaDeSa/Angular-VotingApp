@@ -1,13 +1,29 @@
-import { inject, Injectable } from '@angular/core';
+import {
+  HttpClient,
+  HttpContext,
+} from '@angular/common/http';
+import {
+  inject,
+  Injectable,
+} from '@angular/core';
+import { Router } from '@angular/router';
+
 import { jwtDecode } from 'jwt-decode';
 import moment from 'moment';
-import { environment } from '../../environments/environment';
-import { HttpClient, HttpContext } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import {
+  map,
+  Observable,
+} from 'rxjs';
 import Swal from 'sweetalert2';
-import { BaseService } from '../services/generic/base-service';
+
+import {
+  Auth$Params,
+  login,
+  register,
+  Register$Params,
+} from '../services/fn/auth-login';
 import { ApiConfiguration } from '../services/generic/api-configuration';
-import { Auth$Params, login, Register$Params, register } from '../services/fn/auth-login';
+import { BaseService } from '../services/generic/base-service';
 import { StrictHttpResponse } from '../services/generic/strict-http-response';
 import { ApiResponse } from '../services/response/api-response';
 
@@ -17,7 +33,7 @@ interface TokenPayload {
 }
 
 interface Role {
-  name?: string;
+  roleName?: string;
 }
 
 interface AuthUser {
@@ -29,6 +45,7 @@ interface AuthUser {
   providedIn: 'root'
 })
 export class Auth extends BaseService{
+  private router = inject(Router)
 
    
   constructor(config:ApiConfiguration,http:HttpClient) {
@@ -90,12 +107,20 @@ export class Auth extends BaseService{
   }
   
   getUserAuth(){
-    return localStorage.getItem("user")
+   const userStr = sessionStorage.getItem("user");
+    if (userStr == null) {
+      return null;
+    }
+    try {
+      return JSON.parse(userStr) as AuthUser;
+    } catch {
+      return null;
+    }
   }
   
   store(token:any,user:any){
    sessionStorage.setItem('token',token)
-   sessionStorage.setItem('user',user)
+   sessionStorage.setItem('user',JSON.stringify(user))
   }
 
   public isAuthenticated(): boolean {
@@ -110,16 +135,39 @@ export class Auth extends BaseService{
     try {
       const userObject = JSON.parse(user) as AuthUser;
       const roles = Array.isArray(userObject.roles) ? userObject.roles : [];
-      return roles.some(role => role?.name === 'ADMIN');
+      return roles.some(role => role?.roleName === 'ADMIN');
     } catch {
       return false;
     }
   }
 
+  isSupervisor(user:string): boolean {
+     try {
+      const userObject = JSON.parse(user) as AuthUser;
+      const roles = Array.isArray(userObject.roles) ? userObject.roles : [];
+      return roles.some(role => role?.roleName === 'SUPERVISOR');
+    } catch {
+      return false;
+    }
+  }
+
+  isElector(user:string): boolean {
+     try {
+      const userObject = JSON.parse(user) as AuthUser;
+      const roles = Array.isArray(userObject.roles) ? userObject.roles : [];
+      return roles.some(role => role?.roleName === 'ELECTOR');
+    } catch {
+      return false;
+    }
+  }
+
+
+
   public logOut() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
-    return true;
+    this.router.navigate(['/login']);
+    
   }
  
   showSessionExpiredAlert(): void {

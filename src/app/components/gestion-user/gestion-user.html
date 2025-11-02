@@ -1,1 +1,19 @@
-<p>gestion-user works!</p>
+<div class="container container-fluid">
+
+
+    <app-table
+    [hasActions]="true"
+    [hasSearchForm]="true"
+    [hasFilterInput]="true"
+    (action)="onTableAction($event)"
+    (pageChangeEvent)="onPageChange($event)"
+    [tableData]="userData"
+    [columns]="columns"
+    [tableActions]="actions"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageData]="pageData"
+>
+</app-table>
+
+
+</div>

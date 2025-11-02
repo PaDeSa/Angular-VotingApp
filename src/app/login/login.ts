@@ -1,9 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Route, Router } from '@angular/router';
-import { Auth } from '../auth/auth';
+import { Router } from '@angular/router';
+
 import Swal from 'sweetalert2';
+
+import { Auth } from '../auth/auth';
 import { AuthRequest } from '../services/model/auth-request';
 
 @Component({
