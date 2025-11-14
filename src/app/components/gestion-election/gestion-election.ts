@@ -110,7 +110,6 @@ export class GestionElection implements OnInit {
         
     }
 
-
     loadElections(page:number,size:number){
       this.electionService.findAllElections(
         {

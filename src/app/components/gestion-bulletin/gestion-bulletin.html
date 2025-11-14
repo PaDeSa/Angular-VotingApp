@@ -1,1 +1,26 @@
-<p>gestion-bulletin works!</p>
+
+<div class="container container-fluid">
+
+    <div class="float-right">
+        <button class="btn btn-primary" (click)="openAddBulletinModal()">
+            <i class="fa fa-plus"></i> Ajouter un bulletin
+        </button>
+    </div>
+
+
+    <app-table
+    [hasActions]="true"
+    [hasSearchForm]="false"
+    [hasFilterInput]="true"
+    (action)="onTableAction($event)"
+    (pageChangeEvent)="onPageChange($event)"
+    [tableData]="bulletinData"
+    [columns]="columns"
+    [tableActions]="actions"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageData]="pageData"
+>
+</app-table>
+
+
+</div>

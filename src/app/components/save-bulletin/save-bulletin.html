@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center align-items-center vh-100" style="margin-top: 50px;">
+
+    <form [formGroup]="bulletinForm" (ngSubmit)="createBulletin()">
+          <div class="mb-2">
+            <label for="userSelect" class="form-label">Email</label>
+             <select class="form-select" formControlName="email" >
+              @for(user of userData; track $index){
+                <option value="{{user.email}}">{{user.email}}</option>
+              }
+            </select>
+          </div>
+              <div class="mb-2">
+            <label for="userSelect" class="form-label">Election</label>
+           <select class="form-select" formControlName="nameElection" >
+            @for(election of electionData; track $index){
+              <option value="{{election.name}}">{{election.name}}</option>
+            }
+          </select>
+          </div>
+        <div class="mb-2">
+            <label for="partyName" class="form-label">Nom du parti</label>
+            <input type="text" class="form-control" formControlName="nameParty">
+          </div>
+      
+            <div class="mb-2">
+            <label for="partyAdress" class="form-label">Adresse du parti</label>
+            <input type="text" class="form-control" formControlName="adressParty">
+          </div>
+
+              <div class="mt-2">
+              <img class="rounded-1" width="100%" height="100%" [src]=" selectedPicture || 'https://source.unsplash.com/user/c_v_r/1900x800'" alt="">
+           <input
+          (change)="onFileSelected($event)"
+            class="form-control"
+            type="file"
+            id="formFile"
+            accept="image/*"
+            >
+      </div>
+            
+        <br>
+          <button type="submit" class="btn btn-primary w-100">Créer</button>
+        </form>
+
+</div>

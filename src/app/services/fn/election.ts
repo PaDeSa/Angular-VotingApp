@@ -1,10 +1,18 @@
-import { HttpClient, HttpContext, HttpResponse } from "@angular/common/http";
-import { filter, map, Observable } from "rxjs";
-import { StrictHttpResponse } from "../generic/strict-http-response";
-import { RequestBuilder } from "../request-builder";
-import { ApiResponse } from "../response/api-response";
+import {
+  HttpClient,
+  HttpContext,
+  HttpResponse,
+} from '@angular/common/http';
 
+import {
+  filter,
+  map,
+  Observable,
+} from 'rxjs';
 
+import { StrictHttpResponse } from '../generic/strict-http-response';
+import { RequestBuilder } from '../request-builder';
+import { ApiResponse } from '../response/api-response';
 
 export interface Elections$Params {
     page?: number;
@@ -36,3 +44,25 @@ export function election(http:HttpClient,
 
 election.PATH = '/api/v1/election/all';
 
+
+export function getBulletins(http:HttpClient,
+    rootUrl: string,
+    context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+
+    const rb = new RequestBuilder(rootUrl,getBulletins.PATH, 'get')
+    return http.request(
+        rb.build({
+            responseType: 'json',
+            accept: 'application/json',
+            context: context
+        })
+    ).pipe(
+        filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+            return r as StrictHttpResponse<ApiResponse>;
+        })
+    );
+
+}
+
+getBulletins.PATH = '/api/v1/bulletins';
