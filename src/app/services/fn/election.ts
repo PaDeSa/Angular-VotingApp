@@ -101,3 +101,28 @@ export function createBulletin(
 }
 
 createBulletin.PATH = '/api/v1/bulletins/create';
+
+
+export function electionOpened(
+  http: HttpClient,
+  rootUrl: string,
+  context?: HttpContext
+): Observable<StrictHttpResponse<ApiResponse>> {
+  const rb = new RequestBuilder(rootUrl, electionOpened.PATH, 'get');
+  return http
+    .request(
+      rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context: context
+      })
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ApiResponse>;
+      })
+    );
+}
+
+electionOpened.PATH = '/api/v1/election/get/active-by-user';

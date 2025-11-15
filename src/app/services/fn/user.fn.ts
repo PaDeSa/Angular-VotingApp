@@ -20,9 +20,11 @@ export interface Users$Params {
 }
 
 export interface UploadCoverPicture$Params {
-  'id': number;
-      body?: {'file': Blob;}
-}
+      body?: {
+        'file': Blob;
+        id: number;}
+      }
+
 
 export function users(http:HttpClient,
     rootUrl: string,
@@ -57,11 +59,17 @@ export function uploadUserProfilePicture(http:HttpClient,
     params: UploadCoverPicture$Params,
     context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
     const rb = new RequestBuilder(rootUrl,uploadUserProfilePicture.PATH, 'post')
-
-     if (params) {
-        rb.path('id', params['id'], {});
-        rb.body(params.body);
-  }
+     const formData = new FormData();
+//      if (params) {
+//         rb.path('id', params['id'], {});
+//         rb.body(params.body?.file);
+       
+//   }
+   
+   if(params){
+    rb.body(params.body?.id, 'multipart/form-data');
+    rb.body(params.body?.file, 'multipart/form-data');
+   }
     return http.request(
         rb.build({            
             responseType: 'json',
@@ -76,7 +84,7 @@ export function uploadUserProfilePicture(http:HttpClient,
     );
 }
 
-uploadUserProfilePicture.PATH = '/api/v1/users/upload/{id}';
+uploadUserProfilePicture.PATH = '/api/v1/users/upload';
 
 
 export function listElectors(http:HttpClient,

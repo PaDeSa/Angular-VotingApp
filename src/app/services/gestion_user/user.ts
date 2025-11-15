@@ -1,19 +1,14 @@
 import {
-  HttpBackend,
   HttpClient,
   HttpContext,
 } from '@angular/common/http';
-import {
-  inject,
-  Injectable,
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import {
   map,
   Observable,
 } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
 import {
   listElectors,
   UploadCoverPicture$Params,
@@ -25,7 +20,6 @@ import { ApiConfiguration } from '../generic/api-configuration';
 import { BaseService } from '../generic/base-service';
 import { StrictHttpResponse } from '../generic/strict-http-response';
 import { ApiResponse } from '../response/api-response';
-import { Auth } from '../services';
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +30,7 @@ export class User extends BaseService{
     super(config, http);
   }
 
-  private authS = inject(Auth);
-  private http2= inject(HttpClient) 
-  private handler= inject(HttpBackend) as HttpBackend
+  
 
 
   findAllUsers$Response(params?: Users$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
@@ -52,7 +44,7 @@ export class User extends BaseService{
   }
 
 
-  uploadUserProfilePicture$Response(params: {id: number, body?: {'file': Blob}}, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+  uploadUserProfilePicture$Response(params: UploadCoverPicture$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
     return uploadUserProfilePicture(this.http, this.rootUrl, params, context);
   }
 
@@ -73,28 +65,7 @@ export class User extends BaseService{
     );
   }
 
-  uploadCover(id:any,data:any):Observable<any>{
-    return this.postWithOption(`${environment.apiUrl}/users/upload/${id}`,data)
-  }
-
-
-   postWithOption(
-    path: string,
-    body: Object = {},
-    httpHeaders?: any
-  ): Observable<any> {
-    this.http2 = new HttpClient(this.handler);
-     const token = this.authS.getToken();
-      let headers = {
-        Authorization: `Bearer ${token}`,
-      };
-    //let headers={}
-     if (httpHeaders) {
-       headers = Object.assign(headers, httpHeaders);
-     }
-   
-    return this.http2.post(path, body, { headers });
-  }
+  
   
   
 }

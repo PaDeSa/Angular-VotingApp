@@ -149,50 +149,37 @@ export class SaveBulletin implements OnInit {
     }
   }
 
-    createBulletin() {
-    console.log(this.bulletinForm.value);
-    this.electionService.createBulletin(
-      {
-        body: this.bulletinForm.value
+
+    createBulletinV2(){
+      console.log(this.bulletinForm.value);
+      const formData = new FormData();  
+      let object = {
+        email: this.bulletinForm.value.email,
+        nameElection: this.bulletinForm.value.nameElection,
+        nameParty: this.bulletinForm.value.nameParty,
+        addressParty: this.bulletinForm.value.adressParty
       }
-    ).subscribe({
-      next:(datas:any)=>{
-        console.log(datas);
-        //this.router.navigate(['bulletins']);
-        //call upload function here
-        let id = /* The expression `datas?.data?.candidat?.id` is trying to access the `id` property of
-        the `candidat` object within the `data` object within the `datas` object. */
-        datas?.data?.candidat?.id;
-        console.log("Candidat ID:", id);
-        this.uploadUserPicture(id);
-        Swal.fire('Succès', 'Bulletin créé avec succès', 'success');
-        this.close();
-       },
-       error:(error:any)=>{
-        console.log("Error")
-       }
-        })
 
-    }
-
-    uploadUserPicture(idCandidat:number){
-      const formData = new FormData();
+      formData.append('request', JSON.stringify(object));
       if(this.selectedBookCover){
         formData.append('file', this.selectedBookCover);
       }
-      this.userService.uploadCover(idCandidat,formData).subscribe({
+      this.electionService.createBulletinV2(formData).subscribe({
         next:(datas:any)=>{
           console.log(datas);
+          Swal.fire('Succès', 'Bulletin créé avec succès', 'success');
+          this.close();
          },
          error:(error:any)=>{
           console.log("Error")
          }
-        })
-    }
+          })
+      }
 
     close(){
       this.dialogRef.close();
     }
+    
     
 
 }

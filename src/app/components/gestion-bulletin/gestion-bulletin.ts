@@ -67,7 +67,8 @@ export class GestionBulletin implements OnInit{
         { columnDef: 'id', header: 'Id' },
         { columnDef: 'name', header: 'Nom' },
         { columnDef: 'email', header: 'Email' },
-        { columnDef: 'election', header: 'Election' }
+        { columnDef: 'election', header: 'Election' },
+        { columnDef: 'fileUri', header: 'avatar',isImage:true },
     ];
   }
 
@@ -109,6 +110,7 @@ export class GestionBulletin implements OnInit{
       data[i].election = data[i].election?.name;
       data[i].name = data[i].candidat?.firstName + ' ' + data[i].candidat?.lastName;
       data[i].email = data[i].candidat?.email;
+      data[i].fileUri = data[i].candidat?.fileUri;
     }
   }
 
