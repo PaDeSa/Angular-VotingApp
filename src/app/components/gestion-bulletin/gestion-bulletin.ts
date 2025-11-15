@@ -8,6 +8,7 @@ import {
 import {
   MatDialog,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -47,6 +48,7 @@ export class GestionBulletin implements OnInit{
  page = 0;
  pageSize = 10;
  dialog = inject(MatDialog);
+ dialogRef!: MatDialogRef<SaveBulletin>;
 
 
  constructor(private cdr:ChangeDetectorRef){
@@ -91,12 +93,14 @@ export class GestionBulletin implements OnInit{
   }
 
   openAddBulletinModal(){
-     this.dialog.open(SaveBulletin,{
+   const dialogRef =  this.dialog.open(SaveBulletin,{
       width: '1000px',
       height: '500px',
       data: {}
      });
-
+      dialogRef.afterClosed().subscribe(result => {
+        this.loadBulletins();
+      });
   }
 
 

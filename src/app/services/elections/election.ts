@@ -10,6 +10,8 @@ import {
 } from 'rxjs';
 
 import {
+  Bulletin$Params,
+  createBulletin,
   election,
   Elections$Params,
   getBulletins,
@@ -47,6 +49,17 @@ export class Election extends BaseService {
 
   getBulletins(context?: HttpContext):Observable<ApiResponse> {
     return this.getBulletins$Response(context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
+    );
+  }
+
+
+  createBulletin$Response(params: Bulletin$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+    return createBulletin(this.http, this.rootUrl, params, context);
+  }
+
+  createBulletin(params: Bulletin$Params, context?: HttpContext):Observable<ApiResponse> {
+    return this.createBulletin$Response(params, context).pipe(
       map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
     );
   }
