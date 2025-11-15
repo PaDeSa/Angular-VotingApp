@@ -54,39 +54,6 @@ export function users(http:HttpClient,
 users.PATH = '/api/v1/users/all';
 
 
-export function uploadUserProfilePicture(http:HttpClient,
-    rootUrl: string,
-    params: UploadCoverPicture$Params,
-    context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
-    const rb = new RequestBuilder(rootUrl,uploadUserProfilePicture.PATH, 'post')
-     const formData = new FormData();
-//      if (params) {
-//         rb.path('id', params['id'], {});
-//         rb.body(params.body?.file);
-       
-//   }
-   
-   if(params){
-    rb.body(params.body?.id, 'multipart/form-data');
-    rb.body(params.body?.file, 'multipart/form-data');
-   }
-    return http.request(
-        rb.build({            
-            responseType: 'json',
-            accept: 'application/json',
-            context: context
-        })
-    ).pipe(
-        filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-        map((r: HttpResponse<any>) => {
-            return r as StrictHttpResponse<ApiResponse>;
-        })
-    );
-}
-
-uploadUserProfilePicture.PATH = '/api/v1/users/upload';
-
-
 export function listElectors(http:HttpClient,
   rootUrl: string,
   context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {

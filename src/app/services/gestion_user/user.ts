@@ -11,8 +11,6 @@ import {
 
 import {
   listElectors,
-  UploadCoverPicture$Params,
-  uploadUserProfilePicture,
   users,
   Users$Params,
 } from '../fn/user.fn';
@@ -39,17 +37,6 @@ export class User extends BaseService{
 
   findAllUsers(params?: Users$Params, context?: HttpContext):Observable<ApiResponse> {
     return this.findAllUsers$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
-    );
-  }
-
-
-  uploadUserProfilePicture$Response(params: UploadCoverPicture$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
-    return uploadUserProfilePicture(this.http, this.rootUrl, params, context);
-  }
-
-  uploadUserProfilePicture(params: UploadCoverPicture$Params, context?: HttpContext):Observable<ApiResponse> {
-    return this.uploadUserProfilePicture$Response(params, context).pipe(
       map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
     );
   }
