@@ -1,45 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vote pour les candidats</title>
-  <link rel="stylesheet" href="candidats.css">
-</head>
-<body>
+<div class="candidates-container">
 
-  <h1>Vote pour ton candidat préféré</h1>
-
-  <div class="candidates-container">
-    <!-- Candidat 1 -->
-    <div class="candidate-card">
-      <img src="https://via.placeholder.com/300x200" alt="Candidat 1" class="candidate-img">
+    @for(bulletin of bulletins; track $index){
+      <div class="candidate-card">
+      <img src="{{bulletin?.candidat?.fileUri}}" alt="Candidat 1" class="candidate-img">
       <div class="candidate-info">
-        <div class="candidate-name">Fatima El Amrani</div>
-        <div class="candidate-desc">Étudiante engagée pour l'environnement et l'éducation.</div>
-        <button class="vote-button" onclick="vote('Fatima El Amrani')">Voter</button>
+        <div class="candidate-name">{{bulletin?.candidat?.lastName}} {{bulletin?.candidat?.firstName}}</div>
+        <!-- <div class="candidate-desc">Étudiante engagée pour l'environnement et l'éducation.</div> -->
+        <button class="vote-button" (click)="voter(bulletin.id,bulletin.election.id)">Voter</button>
       </div>
     </div>
-
-    <!-- Candidat 2 -->
-    <div class="candidate-card">
-      <img src="https://via.placeholder.com/300x200" alt="Candidat 2" class="candidate-img">
-      <div class="candidate-info">
-        <div class="candidate-name">Yassine Ben Ali</div>
-        <div class="candidate-desc">Passionné par la technologie et le changement social.</div>
-        <button class="vote-button" onclick="vote('Yassine Ben Ali')">Voter</button>
-      </div>
-    </div>
-
-    <!-- Ajoute d'autres candidats ici -->
+    }
+ 
   </div>
 
-  <script>
-    function vote(nom) {
-      alert("Vous avez voté pour " + nom + " !");
-      // Ici tu peux faire un appel AJAX vers ton serveur pour enregistrer le vote
-    }
-  </script>
 
-</body>
-</html>

@@ -16,11 +16,17 @@ import {
 import { environment } from '../../../environments/environment';
 import {
   Bulletin$Params,
+  Bulletins$Params,
   createBulletin,
   election,
   electionOpened,
   Elections$Params,
   getBulletins,
+  getBulletinsCandidats,
+  Scrutin$Params,
+  submitOtp,
+  SubmitOtp$Params,
+  vote,
 } from '../fn/election';
 import { ApiConfiguration } from '../generic/api-configuration';
 import { BaseService } from '../generic/base-service';
@@ -86,6 +92,36 @@ export class Election extends BaseService {
 
   electionOpened(context?: HttpContext):Observable<ApiResponse> {
     return this.electionOpened$Response(context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
+    );
+  }
+
+  bulletinsCandidats$Response(params:Bulletins$Params,context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+    return getBulletinsCandidats(this.http, this.rootUrl, params, context);
+  }
+
+  bulletinsCandidats(params:Bulletins$Params,context?: HttpContext):Observable<ApiResponse> {
+    return this.bulletinsCandidats$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
+    );
+  }
+
+
+  vote$Response(params: Scrutin$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+    return vote(this.http, this.rootUrl, params, context);
+  }
+
+  voterCandidat(params: Scrutin$Params, context?: HttpContext):Observable<ApiResponse> {
+    return this.vote$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
+    );
+  }
+
+  submitOtp$Response(params: SubmitOtp$Params, context?: HttpContext):Observable<StrictHttpResponse<ApiResponse>> {
+    return submitOtp(this.http, this.rootUrl, params, context);
+  }
+  submitOtp(params: SubmitOtp$Params, context?: HttpContext):Observable<ApiResponse> {
+    return this.submitOtp$Response(params, context).pipe(
       map((r: StrictHttpResponse<ApiResponse>) => r.body as ApiResponse)
     );
   }

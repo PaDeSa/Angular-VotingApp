@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 import { GlobalConstant } from '../../constants/global.constant';
 import { ISearchRequestForm } from '../../services/model/search.model';
@@ -22,6 +23,7 @@ import { IPagination } from '../../utils/page.data.mode';
 export class ElectionsOpened  implements OnInit {
 
     private electionService = inject(Election)
+    private router = inject(Router);
     electionData:any;
 
    @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -40,6 +42,7 @@ export class ElectionsOpened  implements OnInit {
    pages:any = [];
    page = 0;
    pageSize = 10;
+   
 
     constructor(private cdr:ChangeDetectorRef){
     this.actions = [
@@ -102,10 +105,18 @@ export class ElectionsOpened  implements OnInit {
     
     }
     if(event.actionName === this.actionButton.view){
-      console.log("view election  !!!")
+       let id = event.value.id;
+       console.log("view election  !!!",id)
+       this.navigateCandidats(id);
     }
 
         
+    }
+
+    navigateCandidats(electionId:any){
+      //console.log("navigate to candidats of election id : "+electionId);
+      //this.router.navigate(['/dashboard/candidats'], { queryParams: { electionId: electionId } });
+       this.router.navigate([`/dashboard/candidats/${electionId}`]) 
     }
 
     loadElectionsOpened(){

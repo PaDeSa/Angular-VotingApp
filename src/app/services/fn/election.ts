@@ -12,6 +12,8 @@ import {
 
 import { StrictHttpResponse } from '../generic/strict-http-response';
 import { BulletinRequest } from '../model/bulletin-request';
+import { OtpRequest } from '../model/otp-request';
+import { ScrutinRequest } from '../model/scrutin-request';
 import { RequestBuilder } from '../request-builder';
 import { ApiResponse } from '../response/api-response';
 
@@ -126,3 +128,104 @@ export function electionOpened(
 }
 
 electionOpened.PATH = '/api/v1/election/get/active-by-user';
+
+
+// get bulletins candidats
+
+export interface Bulletins$Params {
+  'electionId': number;
+}
+
+export function getBulletinsCandidats(
+  http: HttpClient,
+  rootUrl: string,
+  params: Bulletins$Params,
+  context?: HttpContext
+): Observable<StrictHttpResponse<ApiResponse>> {
+  const rb = new RequestBuilder(rootUrl, getBulletinsCandidats.PATH, 'get');
+    if (params) {
+        rb.path('electionId', params.electionId, {});
+    }
+  return http
+    .request(
+      rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context: context
+      })
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ApiResponse>;
+      })
+    );
+}
+
+getBulletinsCandidats.PATH = '/api/v1/bulletins/get/{electionId}';
+
+
+export interface Scrutin$Params {
+  body: ScrutinRequest
+}
+
+export function vote(
+  http: HttpClient,
+  rootUrl: string,
+  params: Scrutin$Params,
+  context?: HttpContext
+): Observable<StrictHttpResponse<ApiResponse>> {
+  const rb = new RequestBuilder(rootUrl, vote.PATH, 'post');
+    if(params){
+        rb.body(params.body, 'application/json');
+    }
+  return http
+    .request(
+      rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context: context
+      })
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ApiResponse>;
+      })
+    );
+}
+
+vote.PATH = '/api/v1/scrutins/vote';
+
+
+export interface SubmitOtp$Params {
+  body: OtpRequest
+}
+
+export function submitOtp(
+  http: HttpClient,
+  rootUrl: string,
+  params: SubmitOtp$Params,
+  context?: HttpContext
+): Observable<StrictHttpResponse<ApiResponse>> {
+  const rb = new RequestBuilder(rootUrl, submitOtp.PATH, 'post');
+   if(params){
+        rb.body(params.body, 'application/json');
+    }
+  return http
+    .request(
+      rb.build({
+        responseType: 'json',
+        accept: 'application/json',
+        context: context
+      })
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<ApiResponse>;
+      })
+    );
+}
+
+submitOtp.PATH = '/api/v1/scrutins/validate-otp';

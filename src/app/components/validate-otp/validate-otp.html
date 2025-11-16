@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-center align-items-center vh-100" style="margin-top: 50px;">
+
+    <form [formGroup]="otpForm" (ngSubmit)="submitOtp()">
+          
+        <div class="mb-2">
+            <label for="partyName" class="form-label">Saisir OTP</label>
+            <input type="text" class="form-control" formControlName="otp" required>
+          </div> 
+        <br>
+          <button type="submit" class="btn btn-primary w-100">Valider</button>
+        </form>
+
+</div>  
