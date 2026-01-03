@@ -76,10 +76,7 @@ export class ValidateOtp implements OnInit {
             icon: 'error',
           });
         }
-      })
-
-      
-
+      }) 
   }
 
 }
